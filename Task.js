@@ -1,12 +1,12 @@
-// Task Class 
+// ================= Task Class =================
 class Task {
-  constructor(id, title, category, priority) {
+  constructor(id, title, category, priority, isCompleted = false, createdAt = null) {
     this.id = id;
     this.title = title;
     this.category = category;
     this.priority = priority;
-    this.isCompleted = false;
-    this.createdAt = new Date();
+    this.isCompleted = isCompleted;
+    this.createdAt = createdAt ? new Date(createdAt) : new Date();
   }
 
   toggleComplete() {
@@ -14,45 +14,52 @@ class Task {
   }
 }
 
-//TaskManager Class 
+// ================= TaskManager Class =================
 class TaskManager {
   constructor() {
-    this.tasks = [];
+    const saved = JSON.parse(localStorage.getItem("tasks")) || [];
+    this.tasks = saved.map(
+      t => new Task(t.id, t.title, t.category, t.priority, t.isCompleted, t.createdAt)
+    );
+  }
+
+  save() {
+    localStorage.setItem("tasks", JSON.stringify(this.tasks));
   }
 
   addTask(title, category, priority) {
-    // Prevent duplicate in same category
     const exists = this.tasks.some(
-      task =>
-        task.title.toLowerCase() === title.toLowerCase() &&
-        task.category === category
+      t => t.title.toLowerCase() === title.toLowerCase() && t.category === category
     );
-
     if (exists) return null;
 
-    const id = Date.now();
-    const task = new Task(id, title, category, priority);
+    const task = new Task(Date.now(), title, category, priority);
     this.tasks.push(task);
+    this.save();
     return task;
   }
 
   deleteTask(id) {
-    this.tasks = this.tasks.filter(task => task.id !== id);
+    this.tasks = this.tasks.filter(t => t.id !== id);
+    this.save();
   }
 
   toggleTask(id) {
     const task = this.tasks.find(t => t.id === id);
-    if (task) task.toggleComplete();
+    if (task) {
+      task.toggleComplete();
+      this.save();
+    }
   }
 
-  filterTasks(status) {
-    if (status === "completed") return this.tasks.filter(t => t.isCompleted);
-    if (status === "pending") return this.tasks.filter(t => !t.isCompleted);
+  filterTasks(filter) {
+    if (filter === "completed") return this.tasks.filter(t => t.isCompleted);
+    if (filter === "pending") return this.tasks.filter(t => !t.isCompleted);
     return this.tasks;
   }
 }
 
-//App Logic
+// ================= App Logic =================
 const manager = new TaskManager();
 
 const form = document.getElementById("taskForm");
@@ -85,7 +92,7 @@ form.addEventListener("submit", function (e) {
   form.reset();
 });
 
-// Render Task
+// Render One Task
 function renderTask(task) {
   const div = document.createElement("div");
   div.className = "flex justify-between items-center border-b pb-2";
@@ -108,26 +115,27 @@ function renderTask(task) {
   taskList.appendChild(div);
 }
 
-// Show Tasks
+// Render List
 function showTasks(filter) {
   taskList.innerHTML = "";
   manager.filterTasks(filter).forEach(renderTask);
 }
 
-// Toggle
+// Actions
 function handleToggle(id) {
   manager.toggleTask(id);
   showTasks("all");
 }
 
-// Delete
 function handleDelete(id) {
   manager.deleteTask(id);
   showTasks("all");
 }
 
-// Filter buttons
+// Filters
 allBtn.addEventListener("click", () => showTasks("all"));
 pendingBtn.addEventListener("click", () => showTasks("pending"));
 completedBtn.addEventListener("click", () => showTasks("completed"));
-  
+
+// Load saved tasks on startup
+showTasks("all");
