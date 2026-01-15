@@ -16,23 +16,25 @@
   </header>
 
   <!-- Main Container -->
+  <!-- Make it responsive for every dimension-->
   <main class="max-w-3xl mx-auto p-4">
 
     <!-- Task Input Form -->
     <section class="bg-white p-4 rounded shadow mb-4">
       <h2 class="text-lg font-semibold mb-3">Add New Task</h2>
 
-      <form class="space-y-3">
+      <form id="taskForm" class="space-y-3">
 
         <!-- Task Title -->
         <input 
+          id="title"
           type="text" 
           placeholder="Enter task title"
           class="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
 
         <!-- Category Dropdown -->
-        <select class="w-full border p-2 rounded">
+        <select id="category" class="w-full border p-2 rounded">
           <option value="">Select Category</option>
           <option>Work</option>
           <option>Personal</option>
@@ -45,13 +47,13 @@
           <p class="font-medium mb-1">Priority</p>
           <div class="flex gap-4">
             <label class="flex items-center gap-1">
-              <input type="radio" name="priority" /> Low
+              <input type="radio" name="priority" value="Low" /> Low
             </label>
             <label class="flex items-center gap-1">
-              <input type="radio" name="priority" /> Medium
+              <input type="radio" name="priority" value="Medium" /> Medium
             </label>
             <label class="flex items-center gap-1">
-              <input type="radio" name="priority" /> High
+              <input type="radio" name="priority" value="High" /> High
             </label>
           </div>
         </div>
@@ -66,37 +68,25 @@
 
     <!-- Filter Buttons -->
     <section class="flex justify-between mb-4">
-      <button class="flex-1 bg-gray-200 p-2 rounded mr-2">All</button>
-      <button class="flex-1 bg-yellow-200 p-2 rounded mr-2">Pending</button>
-      <button class="flex-1 bg-green-200 p-2 rounded">Completed</button>
+      <button id="allBtn" class="flex-1 bg-gray-300 p-2 rounded mr-2">All</button>
+      <button id="pendingBtn" class="flex-1 bg-red-300 p-2 rounded mr-2">Pending</button>
+      <button id="completedBtn" class="flex-1 bg-green-300 p-2 rounded">Completed</button>
     </section>
 
     <!-- Task List -->
     <section class="bg-white p-4 rounded shadow">
       <h2 class="text-lg font-semibold mb-3">Your Tasks</h2>
 
-      <div class="space-y-3">
-        <!-- Example Task -->
-        <div class="flex justify-between items-center border-b pb-2">
-          <div>
-            <p class="font-medium">Finish project</p>
-            <p class="text-sm text-gray-500">Work • High</p>
-          </div>
-          <button class="text-green-600">✔</button>
-        </div>
-
-        <div class="flex justify-between items-center border-b pb-2">
-          <div>
-            <p class="font-medium">Buy groceries</p>
-            <p class="text-sm text-gray-500">Personal • Medium</p>
-          </div>
-          <button class="text-green-600">✔</button>
-        </div>
+      <div id="taskList" class="space-y-3">
+        <!-- Tasks will be added here by JavaScript -->
       </div>
 
     </section>
 
   </main>
+
+  <!-- Load JS LAST -->
+  <script src="Task.js"></script>
 
 </body>
 </html>
