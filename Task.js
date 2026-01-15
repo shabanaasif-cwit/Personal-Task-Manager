@@ -1,4 +1,4 @@
-// ================== Task Class ==================
+// Task Class 
 class Task {
   constructor(id, title, category, priority) {
     this.id = id;
@@ -14,7 +14,7 @@ class Task {
   }
 }
 
-// ================== TaskManager Class ==================
+//TaskManager Class 
 class TaskManager {
   constructor() {
     this.tasks = [];
@@ -52,7 +52,7 @@ class TaskManager {
   }
 }
 
-// ================== App Logic ==================
+//App Logic
 const manager = new TaskManager();
 
 const form = document.getElementById("taskForm");
