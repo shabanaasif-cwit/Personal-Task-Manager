@@ -1,4 +1,4 @@
-//## How to Run the Project Locally
+//How to Run the Project Locally
 
 To run this project on your computer, first clone the repository from GitHub and move into the project folder.
 
